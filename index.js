@@ -49,7 +49,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(8800, () => {
+const PORT = process.env.PORT || 8800;
+
+app.listen(PORT, () => {
   connect();
-  console.log("listening at 8800");
+  console.log(`listening at 8800 ${PORT}`);
 });
