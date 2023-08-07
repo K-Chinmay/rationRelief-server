@@ -13,7 +13,10 @@ const app = express();
 
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO);
+    await mongoose.connect(process.env.MONGO, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("connected to Mongodb");
   } catch (error) {
     throw error;
