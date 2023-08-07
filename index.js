@@ -15,9 +15,9 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO.toString(), {
+    await mongoose.connect(process.env.MONGO, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useUnifiedTopology: true,
       // useMongoClient: true,
     });
     console.log("connected to Mongodb");
