@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
   isAdmin: { type: Boolean, default: false },
   isSlotBooked: { type: Boolean, default: false },
   slotId: { type: String, default: "" },
+  eventId: { type: String, default: "" },
 });
 
 export default mongoose.model("User", userSchema);
