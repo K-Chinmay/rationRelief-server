@@ -53,6 +53,10 @@ const eventSchema = mongoose.Schema({
   slots: {
     type: [String],
   },
+  numSlots: {
+    type: Number,
+    default: 0,
+  },
   rationSchedule: [
     {
       startTime: {

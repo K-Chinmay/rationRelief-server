@@ -1,6 +1,7 @@
 import Event from "../models/EventSchema.js";
 import Slot from "../models/slotSchema.js";
 import User from "../models/userSchema.js";
+import { ObjectId } from "mongodb";
 
 import { createError } from "../utils/error.js";
 
@@ -13,6 +14,42 @@ export const createSlot = async (req, res, next) => {
       await Event.findByIdAndUpdate(eventId, {
         $push: { slots: savedSlot._id },
       });
+
+      await Event.findByIdAndUpdate(
+        { _id: new ObjectId(eventId) },
+        [
+          {
+            $set: {
+              rationDetails: {
+                $map: {
+                  input: "$rationDetails",
+                  as: "item",
+                  in: {
+                    $mergeObjects: [
+                      "$$item",
+                      {
+                        quantity: {
+                          $cond: {
+                            if: { $gte: ["$$item.quantity", 0] },
+                            then: {
+                              $subtract: [
+                                "$$item.quantity",
+                                "$$item.allocatedPerUser",
+                              ],
+                            },
+                            else: 0,
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        ],
+        { new: true } // To return the updated document
+      );
       await User.updateOne(
         { _id: req.body.userId },
         {
